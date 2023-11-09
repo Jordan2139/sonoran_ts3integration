@@ -76,7 +76,7 @@ on('SonoranCAD::pushevents:UnitLogout', function (id) {
     }
 });
 
-setInterval(() => {
+setInterval(function() {
     if (clientsToRemove.length > 0) {
         TeamSpeak.connect({
             host: ts3config.ts3server_host,
@@ -86,7 +86,7 @@ setInterval(() => {
             username: ts3config.ts3server_user,
             password: ts3config.ts3server_pass,
             nickname: "SonoranCAD Integration"
-        }).then(async teamspeak => {
+        }).then(async function(teamspeak) {
             //retrieve the server group
             const sGroup = await teamspeak.getServerGroupByName(ts3config.onduty_servergroup);
             if (!sGroup) {
@@ -113,14 +113,14 @@ setInterval(() => {
             }
             clientsToRemove = [];
             await teamspeak.quit();
-        }).catch(e => {
+        }).catch(function (e) {
             emit("SonoranCAD::core:writeLog", "error", "TS3 Integration Error: " + e);
             clientsToRemove = [];
         })
     }
 }, ts3config.logoutGraceTime)
 
-setInterval(() => {
+setInterval(function() {
     if (clientsToAdd.length > 0) {
         TeamSpeak.connect({
             host: ts3config.ts3server_host,
@@ -130,7 +130,7 @@ setInterval(() => {
             username: ts3config.ts3server_user,
             password: ts3config.ts3server_pass,
             nickname: "SonoranCAD Integration"
-        }).then(async teamspeak => {
+        }).then(async function(teamspeak) {
             //retrieve the server group
             const sGroup = await teamspeak.getServerGroupByName(ts3config.onduty_servergroup);
             if (!sGroup) {
@@ -149,7 +149,7 @@ setInterval(() => {
             }
             clientsToAdd = [];
             await teamspeak.quit();
-        }).catch(e => {
+        }).catch(function(e) {
             emit("SonoranCAD::core:writeLog", "error", "TS3 Integration Error: " + e);
             clientsToAdd = [];
         })
